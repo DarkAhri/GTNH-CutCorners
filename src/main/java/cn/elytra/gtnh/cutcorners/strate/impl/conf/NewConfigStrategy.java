@@ -14,6 +14,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;
 import mods.railcraft.api.crafting.ICokeOvenRecipe;
+import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import tectech.recipe.EyeOfHarmonyRecipe;
@@ -150,13 +151,34 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     }
 
     @Override
+    public int getBotaniaSpreaderPingbackTicks(int original) {
+        return config.doesBlacklistBotania()
+            ? original
+            : config.getDurationModification().getModifiedValue(original, 1);
+    }
+
+    @Override
+    public void updateFurnaceRecipe_size(ItemStack stackIn, ItemStack stackOut) {
+        if (config.doesBlacklistFurnace()) {
+            return;
+        }
+
+        stackIn.stackSize = clampStackSize(config.getFurnaceInputSizeModification().getModifiedValue(stackIn.stackSize, 1));
+        stackOut.stackSize = clampStackSize(config.getFurnaceOutputSizeModification().getModifiedValue(stackOut.stackSize, 1));
+    }
+
+    @Override
     public int getThaumcraftFurnaceSmeltingTime(int original) {
-        return ICutCornerStrategy.super.getThaumcraftFurnaceSmeltingTime(original);
+        return config.doesBlacklistThaumcraft()
+            ? original
+            : config.getDurationModification().getModifiedValue(original, 1);
     }
 
     @Override
     public int getThaumcraftNodeRegenerationTime(int original) {
-        return ICutCornerStrategy.super.getThaumcraftNodeRegenerationTime(original);
+        return config.doesBlacklistThaumcraft()
+            ? original
+            : config.getDurationModification().getModifiedValue(original, 1);
     }
 
     @Override
