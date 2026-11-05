@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-@Mixin(value = TileEntityCropSticks.class, remap = false)
+@Mixin(value = TileEntityCropSticks.class, remap = true)
 @Restriction(require = @Condition(ModConst.ModId.CropsNH))
 public class TECropSticksMixin {
 
